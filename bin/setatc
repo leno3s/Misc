@@ -1,0 +1,15 @@
+cpp_template="
+#include <bits/stdc++.h>\n
+using namespace std;\n
+#define rep(i,n) for(int i=0, i##_len=(n); i<i##_len; ++i)\n
+typedef long long ll;\n
+\n
+int main(int argc, char* argv[]){\n
+    \n
+}\n
+"
+
+for i in A B C D
+  do
+    echo $cpp_template > "${i}.cpp"
+  done
