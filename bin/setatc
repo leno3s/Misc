@@ -1,5 +1,5 @@
 cpp_template="
-#include <bits/stdc++.h>\n
+#include \"bits/stdc++.h\"\n
 using namespace std;\n
 #define rep(i,n) for(int i=0, i##_len=(n); i<i##_len; ++i)\n
 typedef long long ll;\n
@@ -11,5 +11,14 @@ int main(int argc, char* argv[]){\n
 
 for i in A B C D
   do
-    echo $cpp_template > "${i}.cpp"
+    {
+      echo '#include "bits/stdc++.h"' > "${i}.cpp"
+      echo 'using namespace std;' >> "${i}.cpp"
+      echo '#define rep(i,n) for(int i=0, i##_len=(n); i<i##_len; ++i)' >> "${i}.cpp"
+      echo 'typedef long long ll;' >> "${i}.cpp"
+      echo '' >> "${i}.cpp"
+      echo 'int main(int argc, char* argv[]){' >> "${i}.cpp"
+      echo '    ' >> "${i}.cpp"
+      echo '}' >> "${i}.cpp"
+    }
   done
