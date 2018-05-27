@@ -1,8 +1,0 @@
-#!/bin/bash
-
-f_full="$1"
-f_name="${f_full%.*}"
-
-pandoc temp.md -o temp.html && \
-sed -e 's/<code>//g' -e 's/<\/code>//g' -e 's/，/,/g' -e 's/．/./g' -e 's/ id=\".*\"//g' temp.html > ${f_name}.html
-

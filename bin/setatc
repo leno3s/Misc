@@ -1,20 +1,12 @@
-cpp_template="
-#include \"bits/stdc++.h\"\n
-using namespace std;\n
-#define rep(i,n) for(int i=0, i##_len=(n); i<i##_len; ++i)\n
-typedef long long ll;\n
-\n
-int main(int argc, char* argv[]){\n
-    \n
-}\n
-"
-
 for i in A B C D
   do
     {
-      echo '#include "bits/stdc++.h"' > "${i}.cpp"
+      echo '#define _overload3(_1,_2,_3,name,...) name' > "${i}.cpp"
+      echo '#define _rep(i,n) repi(i,0,n)' >> "${i}.cpp"
+      echo '#define repi(i,a,b) for(int i=int(a);i<int(b);++i)' >> "${i}.cpp"
+      echo '#define rep(...) _overload3(__VA_ARGS__,repi,_rep,)(__VA_ARGS__)' >> "${i}.cpp"
+      echo '#include "bits/stdc++.h"' >> "${i}.cpp"
       echo 'using namespace std;' >> "${i}.cpp"
-      echo '#define rep(i,n) for(int i=0, i##_len=(n); i<i##_len; ++i)' >> "${i}.cpp"
       echo 'typedef long long ll;' >> "${i}.cpp"
       echo '' >> "${i}.cpp"
       echo 'int main(int argc, char* argv[]){' >> "${i}.cpp"
