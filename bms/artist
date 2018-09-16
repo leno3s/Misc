@@ -1,0 +1,7 @@
+for file in *; do
+    art=$(echo ${file} | awk -F '[][]' '{print $2}' | awk -F '／' '{print $1}' | awk -F 'obj' '{print $1}' | awk -F'BGI' '{print $1}' | awk -F 'BGA' '{print $1}')
+    echo "${cnt} : ${file}\n${art}"
+    cnt=$((cnt + 1))
+
+    mid3v2 -a "${art}" "${file}"
+done

@@ -1,0 +1,7 @@
+for file in *; do
+    tit=$(echo ${file} | perl -pe 's|^\[.+?\]||g' | sed -e 's/^[ ]*//g' | sed -e 's/\.mp3//g')
+    echo "${cnt} : ${file}\n${tit}"
+    cnt=$((cnt + 1))
+
+    mid3v2 -t "${tit}" "${file}"
+done
