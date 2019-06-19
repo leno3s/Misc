@@ -1,0 +1,62 @@
+\documentclass[uplatex, dvipdfmx, a4paper]{ujarticle}
+\usepackage{here}
+
+\newcommand*{\World}[0]{
+  \mbox{
+    \large{いろ}
+    \hspace{-0.6em}
+    \raisebox{-.2em}{\small{と\hspace{-.1em}り}}
+    \hspace{-.6em}
+    \raisebox{.2em}{\small{ど\hspace{-.1em}り}}
+    \hspace{-0.7em}
+    \raisebox{-.15em}{\small{の}}
+    \hspace{-0.5em}
+    \large{セカイ}
+  }
+}
+
+\newcommand*{\Light}[0]{
+  \mbox{
+    \large{いろ}
+    \hspace{-0.6em}
+    \raisebox{-.2em}{\small{と\hspace{-.1em}り}}
+    \hspace{-.6em}
+    \raisebox{.2em}{\small{ど\hspace{-.1em}り}}
+    \hspace{-0.7em}
+    \raisebox{-.15em}{\small{の}}
+    \hspace{-0.5em}
+    \large{ヒカリ}
+  }
+}
+
+\newcommand*{\Scarlet}[0]{
+  \mbox{
+    \large{紅}\small{い}
+    \hspace{-0.3em}
+    \raisebox{-.1em}{\normalsize{瞳}}
+    \hspace{-.3em}
+    \raisebox{-.5em}{\small{\hspace{-.1em}に}}
+    \hspace{-1.2em}
+    \raisebox{.4em}{\small{映}
+    \raisebox{-.4em}{\small\hspace{-.1em}る}}
+    \hspace{-0.7em}
+    \large{セカイ}
+  }
+}
+
+\begin{document}
+\section{}
+\LaTeX を用いて「いろとりどりのセカイ」「いろとりどりのヒカリ」「赤い瞳に映るセカイ」のロゴを再現した.
+「いろとりどりのミライ」については, 存在するロゴが縦書きの物のみであったため, 省略する.
+
+\begin{figure}[H]
+  \centering
+  \World
+  \Light
+  \Scarlet
+  \caption{作成したロゴ}
+\end{figure}
+
+
+\end{document}
+
