@@ -1,11 +1,14 @@
 \documentclass[uplatex, dvipdfmx, unicode]{beamer}
 \usetheme{CambridgeUS}
 \usepackage{amsmath, amssymb}
+\usepackage{fontawesome}
+\usepackage{tikz}
+\usetikzlibrary{calc}
 
 \title{入出力の話}
-\author{@leno3s}
+\author{\texttt{@leno3s}}
 \date{\today}
-\institute{leno3s.net}
+\institute{\url{leno3s.net}}
 
 \begin{document}
 \maketitle
@@ -40,17 +43,17 @@
 
 \begin{frame}
   \centering
-  \Huge{使ってる人✋}
+  \Huge{使ってる人\faHandPaperO}
 \end{frame}
 
 \begin{frame}
   \centering
-  \Huge{使ってない人✋}
+  \Huge{使ってない人\faHandPaperO}
 \end{frame}
 
 \begin{frame}
   \centering
-  \Huge{わからない人✋}
+  \Huge{わからない人\faHandPaperO}
 \end{frame}
 
 \begin{frame}
@@ -65,7 +68,7 @@
 \begin{frame}
   そもそもCUIとは？
   \begin{itemize}
-    \item{Charcter User Interface}
+    \item{Character User Interface}
     \item{グラフィカルでない, 文字を基本としたインターフェース}
   \end{itemize}
 \end{frame}
@@ -106,7 +109,7 @@
 
 \begin{frame}{}
   \centering
-  \Huge{この形式のコンテストに参加した事がある人✋}
+  \Huge{この形式のコンテストに参加した事がある人\faHandPaperO}
 \end{frame}
 
 \begin{frame}{}
@@ -121,7 +124,7 @@
 \section{標準入出力って？}
 \begin{frame}
   \centering
-  \Huge{標準入出力についてご存知の人✋}
+  \Huge{標準入出力についてご存知の人\faHandPaperO}
 \end{frame}
 
 \begin{frame}
@@ -161,7 +164,7 @@
 \end{frame}
 
 \begin{frame}
-  \Large{\alert{ここからLinux/Unix基準の話をします}} \\
+  \Large{\alert{ここからLinux/Unix基準の話をします}\faLinux} \\
   \vspace{0.2in}
 
   \normalsize
@@ -274,6 +277,33 @@
   $\downarrow$ 端末 $\downarrow$
 \end{frame}
 
+\begin{frame}{補足}
+  ウィンドウの表示や標準出力を表示, キーボード入力を取得したりする \\
+  \alert{コマンドの解釈はしない} \\
+  \ \ $\rightarrow$ これは\alert{シェル}の機能
+\end{frame}
+
+\begin{frame}{補足}
+  シェル
+  \begin{itemize}
+    \item{bash, dash, tcsh, fish, ...}
+    \item{入力されたコマンドを解釈して実行する}
+    \item{カーネルを直接操作から保護する$\rightarrow$殻っぽい$\rightarrow$シェル}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{補足2}
+  /proc/self/fd/[0-9]のfdってなによ \\
+  \ \ $\rightarrow$ File Descriptor \\
+  \ \ $\rightarrow$ システムを介してファイルを扱うための鍵
+\end{frame}
+
+\begin{frame}{補足2}
+  stdin/out/errに0/1/2が必ず割り当てられる \\
+  他のファイルをプログラムがopen等するとfdが生成される \\
+  \ \ $\rightarrow$ systemcallのopen()の返り値がこのint値
+\end{frame}
+
 \begin{frame}
   \centering
   補足終わり
@@ -294,7 +324,15 @@
 \begin{frame}{リダイレクト}
   出力先を変えるコマンド(嘘)\footnote{これはシェルの機能であってコマンドではない}がある \\
   \$ echo hoge \alert{$>$ ./out.txt} \\
-  で./out.txtへと出力することができる
+  で./out.txtへと出力することができる \\
+  \vspace{.2in}
+  \alert{!!!! 出力先に指定したファイルは上書きされるので注意 !!!!}
+\end{frame}
+
+\begin{frame}{リダイレクト}
+  \$ echo hoge \alert{$>>$ ./out.txt} \\
+  $>>$で追記になる \\
+  (ファイルの末尾へ書き込む)
 \end{frame}
 
 \begin{frame}{やってみよう！}
@@ -303,23 +341,196 @@
 \end{frame}
 
 \begin{frame}{やってみよう！}
-  できましたか？どうなりましたか？✋
+  できましたか？どうなりましたか？\faHandPaperO
 \end{frame}
 
 \begin{frame}{やってみよう！}
   \$ command \alert{$>$ to/file/path} \\
   が標準出力先をto/file/pathへ向けている \\
-  $\rightarrow$ ファイルへの保存ができる！
+  $\rightarrow$ ファイルへの保存ができる！ \\
+  \vspace{.5cm}
 \end{frame}
 
 \begin{frame}{標準入力}
-  ちなみに: 入力のリダイレクトもできる
-  \tiny{標準入力から待ち受けるコマンド少なくて例示がしづらい...} \\
-  \normalsize
-  \$ cat $<$ out.txt \\
+  入力のリダイレクトもできる \\
+  \$ grep regex $<$ hoge.txt \\
   \vspace{.2in}
   普段はキーボードから入力を待つところを, ファイルの内容を入力とすることができる. \\
-  \ \ $\rightarrow$ !!! 競プロの標準入力では !!! \\
+  \ \ $\rightarrow$ !!! ファイルからの標準入力に使えるのでは !!! \\
+\end{frame}
+
+\begin{frame}{ちょっと補足}
+  リダイレクトにはFile Descriptorを指定できる \\
+  e.g.)
+  \begin{itemize}
+    \item{echo hoge 0$>$\&1}
+    \item{curl example.com $>$ file.txt 2$>$\&1 }
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{図解1}
+  \centering
+  \$ echo hoge
+  \begin{figure}[h]
+    \begin{tikzpicture}[scale=.5]
+      \draw (0, 0) node [draw,rectangle,minimum width=1cm,minimum height=4cm,label={\tiny echo}] (p) {}
+        ($(p.east) + (0, 3)$) coordinate (pin) node [label={\tiny 0}, right](){}
+        ($(p.east) + (0, 1)$) coordinate (pout) node [label={\tiny 1}, right](){}
+        ($(p.east) + (0,-1)$) coordinate (perr) node [label={\tiny 2}, right](){};
+      \draw (5, 0) node [draw,rectangle,minimum width=1.5cm,minimum height=4cm,label={\tiny shell}] (sh) {}
+        ($(sh.east) + (0, 3)$) coordinate (srin) node [label={\tiny 0}, right](){}
+        ($(sh.east) + (0, 1)$) coordinate (srout) node [label={\tiny 1}, right](){}
+        ($(sh.east) + (0,-1)$) coordinate (srerr) node [label={\tiny 2}, right](){}
+        ($(sh.west) + (0, 3)$) coordinate (slin) node [label={\tiny 0}, left](){}
+        ($(sh.west) + (0, 1)$) coordinate (slout) node [label={\tiny 1}, left](){}
+        ($(sh.west) + (0,-1)$) coordinate (slerr) node [label={\tiny 2}, left](){};
+      \draw (10, 3) node [draw,rectangle,minimum width=1.5cm,minimum height=.5cm] (key) {\tiny keyboard}
+        (key.west) coordinate (key);
+      \draw (10, 0) node [draw,rectangle,minimum width=1.5cm,minimum height=.5cm] (con) {\tiny console}
+        (con.west) coordinate (con);
+      \draw
+        (srin) -- (key)
+        (srout) -- (con)
+        (srerr) -- (con)
+        (pin) -- (slin)
+        (pout) -- (slout)
+        (perr) -- (slerr);
+      \draw[dashed]
+        (srin) -- (slin)
+        (srout) -- (slout)
+        (srerr) -- (slerr);
+    \end{tikzpicture}
+  \end{figure}
+
+  $\rightarrow$キーボードが標準入力に, 標準(エラー)出力がコンソールに繋がる
+\end{frame}
+
+\begin{frame}{図解2}
+  \centering
+  \$ echo hoge $>$ out.txt
+  \begin{figure}[h]
+    \begin{tikzpicture}[scale=.5]
+      \draw (0, 0) node [draw,rectangle,minimum width=1cm,minimum height=4cm,label={\tiny echo}] (p) {}
+        ($(p.east) + (0, 3)$) coordinate (pin) node [label={\tiny 0}, right](){}
+        ($(p.east) + (0, 1)$) coordinate (pout) node [label={\tiny 1}, right](){}
+        ($(p.east) + (0,-1)$) coordinate (perr) node [label={\tiny 2}, right](){};
+      \draw (5, 0) node [draw,rectangle,minimum width=1.5cm,minimum height=4cm,label={\tiny shell}] (sh) {}
+        ($(sh.east) + (0, 3)$) coordinate (srin) node [label={\tiny 0}, right](){}
+        ($(sh.east) + (0, 1)$) coordinate (srout) node [label={\tiny 1}, right](){}
+        ($(sh.east) + (0,-1)$) coordinate (srerr) node [label={\tiny 2}, right](){}
+        ($(sh.east) + (0,-3)$) coordinate (sr3) node [label={\tiny 3}, right](){}
+        ($(sh.west) + (0, 3)$) coordinate (slin) node [label={\tiny 0}, left](){}
+        ($(sh.west) + (0, 1)$) coordinate (slout) node [label={\tiny 1}, left](){}
+        ($(sh.west) + (0,-1)$) coordinate (slerr) node [label={\tiny 2}, left](){};
+      \draw (10, 3) node [draw,rectangle,minimum width=1.5cm,minimum height=.5cm] (key) {\tiny keyboard}
+        (key.west) coordinate (key);
+      \draw (10, 0) node [draw,rectangle,minimum width=1.5cm,minimum height=.5cm] (con) {\tiny console}
+        (con.west) coordinate (con);
+      \draw (10, -3) node [draw,rectangle,minimum width=1.5cm,minimum height=.5cm] (f) {\tiny out.txt}
+        (f.west) coordinate (file);
+      \draw
+        (srin) -- (key)
+        (srout) -- (con)
+        (srerr) -- (con)
+        (pin) -- (slin)
+        (pout) -- (slout)
+        (perr) -- (slerr)
+        (sr3) -- (file);
+      \draw[dashed]
+        (slout) -- (sr3)
+        (slin) -- (srin)
+        (slerr) -- (srerr);
+    \end{tikzpicture}
+  \end{figure}
+  echo の標準出力が fd=3(out.txt) へ向かう
+\end{frame}
+
+\begin{frame}{図解3}
+  \centering
+  \$ echo hoge $<$ in.txt $>$ out.txt
+  \begin{figure}[h]
+    \begin{tikzpicture}[scale=.5]
+      \draw (0, 0) node [draw,rectangle,minimum width=1cm,minimum height=4cm,label={\tiny echo}] (p) {}
+        ($(p.east) + (0, 3)$) coordinate (pin) node [label={\tiny 0}, right](){}
+        ($(p.east) + (0, 1)$) coordinate (pout) node [label={\tiny 1}, right](){}
+        ($(p.east) + (0,-1)$) coordinate (perr) node [label={\tiny 2}, right](){};
+      \draw (5, 0) node [draw,rectangle,minimum width=1.5cm,minimum height=4cm,label={\tiny shell}] (sh) {}
+        ($(sh.east) + (0, 3)$) coordinate (srin) node [label={\tiny 0}, right](){}
+        ($(sh.east) + (0, 1)$) coordinate (srout) node [label={\tiny 1}, right](){}
+        ($(sh.east) + (0,-1)$) coordinate (srerr) node [label={\tiny 2}, right](){}
+        ($(sh.east) + (0,-2.25)$) coordinate (sr3) node [label={\tiny 3}, right](){}
+        ($(sh.east) + (0,-3.75)$) coordinate (sr4) node [label={\tiny 4}, right](){}
+        ($(sh.west) + (0, 3)$) coordinate (slin) node [label={\tiny 0}, left](){}
+        ($(sh.west) + (0, 1)$) coordinate (slout) node [label={\tiny 1}, left](){}
+        ($(sh.west) + (0,-1)$) coordinate (slerr) node [label={\tiny 2}, left](){};
+      \draw (10, 3) node [draw,rectangle,minimum width=1.5cm,minimum height=.5cm] (key) {\tiny keyboard}
+        (key.west) coordinate (key);
+      \draw (10, 0) node [draw,rectangle,minimum width=1.5cm,minimum height=.5cm] (con) {\tiny console}
+        (con.west) coordinate (con);
+      \draw (10, -2.25) node [draw,rectangle,minimum width=1.5cm,minimum height=.5cm] (f) {\tiny in.txt}
+        (f.west) coordinate (in);
+      \draw (10, -3.75) node [draw,rectangle,minimum width=1.5cm,minimum height=.5cm] (f) {\tiny out.txt}
+        (f.west) coordinate (out);
+      \draw
+        (srin) -- (key)
+        (srout) -- (con)
+        (srerr) -- (con)
+        (pin) -- (slin)
+        (pout) -- (slout)
+        (perr) -- (slerr)
+        (sr3) -- (in)
+        (sr4) -- (out);
+      \draw[dashed]
+        (slin) -- (sr3)
+        (slout) -- (sr4)
+        (slerr) -- (srerr);
+    \end{tikzpicture}
+  \end{figure}
+  echo の標準出力が fd=3(out.txt) へ向かう
+\end{frame}
+
+\begin{frame}{図解4}
+  \centering
+  \$ echo hoge $<$ in.txt $>$ out.txt
+  \begin{figure}[h]
+    \begin{tikzpicture}[scale=.5]
+      \draw (0, 0) node [draw,rectangle,minimum width=1cm,minimum height=4cm,label={\tiny echo}] (p) {}
+        ($(p.east) + (0, 3)$) coordinate (pin) node [label={\tiny 0}, right](){}
+        ($(p.east) + (0, 1)$) coordinate (pout) node [label={\tiny 1}, right](){}
+        ($(p.east) + (0,-1)$) coordinate (perr) node [label={\tiny 2}, right](){};
+      \draw (5, 0) node [draw,rectangle,minimum width=1.5cm,minimum height=4cm,label={\tiny shell}] (sh) {}
+        ($(sh.east) + (0, 3)$) coordinate (srin) node [label={\tiny 0}, right](){}
+        ($(sh.east) + (0, 1)$) coordinate (srout) node [label={\tiny 1}, right](){}
+        ($(sh.east) + (0,-1)$) coordinate (srerr) node [label={\tiny 2}, right](){}
+        ($(sh.east) + (0,-2.25)$) coordinate (sr3) node [label={\tiny 3}, right](){}
+        ($(sh.east) + (0,-3.75)$) coordinate (sr4) node [label={\tiny 4}, right](){}
+        ($(sh.west) + (0, 3)$) coordinate (slin) node [label={\tiny 0}, left](){}
+        ($(sh.west) + (0, 1)$) coordinate (slout) node [label={\tiny 1}, left](){}
+        ($(sh.west) + (0,-1)$) coordinate (slerr) node [label={\tiny 2}, left](){};
+      \draw (10, 3) node [draw,rectangle,minimum width=1.5cm,minimum height=.5cm] (key) {\tiny keyboard}
+        (key.west) coordinate (key);
+      \draw (10, 0) node [draw,rectangle,minimum width=1.5cm,minimum height=.5cm] (con) {\tiny console}
+        (con.west) coordinate (con);
+      \draw (10, -2.25) node [draw,rectangle,minimum width=1.5cm,minimum height=.5cm] (f) {\tiny in.txt}
+        (f.west) coordinate (in);
+      \draw (10, -3.75) node [draw,rectangle,minimum width=1.5cm,minimum height=.5cm] (f) {\tiny out.txt}
+        (f.west) coordinate (out);
+      \draw
+        (srin) -- (key)
+        (srout) -- (con)
+        (srerr) -- (con)
+        (pin) -- (slin)
+        (pout) -- (slout)
+        (perr) -- (slerr)
+        (sr3) -- (in)
+        (sr4) -- (out);
+      \draw[dashed]
+        (slin) -- (sr3)
+        (slout) -- (sr4)
+        (slerr) -- (srerr);
+    \end{tikzpicture}
+  \end{figure}
+  echo の標準出力が fd=3(out.txt) へ向かう
 \end{frame}
 
 \begin{frame}{まとめ}
@@ -336,22 +547,6 @@
   \ \ $\rightarrow$ fopen/fwrite使わなくていい！cin/cout, scanf/printfでいい！
 \end{frame}
 
-\section{競プロへの応用}
-
-\begin{frame}
-  \centering
-  \Huge{競プロへの応用}
-\end{frame}
-
-\begin{frame}
-  実際にICPCを想定してリダイレクトの演習をします. \\
-  けどテストデータ作るのは面倒くさいので, AtCoderの例題でも解いてもらいます. \\
-\end{frame}
-
-\begin{frame}
-  ここから@\_\_Bactpus\_\_のターン
-\end{frame}
-
 \section{発展 : シェル芸}
 \begin{frame}
   \centering
@@ -362,6 +557,8 @@
   あるコマンドの出力を次のコマンドの入力として渡す事ができる \\
   \$ echo foge $|$ sed s/f/h/ \\
   hoge
+
+  \# cat file $|$ grep regex
 
   \small いわゆるシェル芸で頻出
 \end{frame}
@@ -398,6 +595,21 @@
 
   OSのユーザー数を求める \\
   \$ cat /etc/passwd $|$ awk -F: '$\{\text{print \$1}\}$' $|$ wc -l
+\end{frame}
+
+\section{競プロへの応用}
+\begin{frame}
+  \centering
+  \Huge{競プロへの応用}
+\end{frame}
+
+\begin{frame}
+  実際にICPCを想定してリダイレクトの演習をします. \\
+  けどテストデータ作るのは面倒くさいので, AtCoderの例題でも解いてもらいます. \\
+\end{frame}
+
+\begin{frame}
+  ここから@\_\_Bactpus\_\_のターン
 \end{frame}
 
 \begin{frame}
