@@ -401,8 +401,7 @@
         (srerr) -- (slerr);
     \end{tikzpicture}
   \end{figure}
-
-  $\rightarrow$キーボードが標準入力に, 標準(エラー)出力がコンソールに繋がる
+  KBが標準入力に, 標準(エラー)出力がコンソールに繋がる
 \end{frame}
 
 \begin{frame}{図解2}
@@ -447,7 +446,7 @@
 
 \begin{frame}{図解3}
   \centering
-  \$ echo hoge $<$ in.txt $>$ out.txt
+  \$ ./a.out $<$ in.txt $>$ out.txt
   \begin{figure}[h]
     \begin{tikzpicture}[scale=.5]
       \draw (0, 0) node [draw,rectangle,minimum width=1cm,minimum height=4cm,label={\tiny echo}] (p) {}
@@ -486,12 +485,12 @@
         (slerr) -- (srerr);
     \end{tikzpicture}
   \end{figure}
-  echo の標準出力が fd=3(out.txt) へ向かう
+  echo への標準入力に　in.txt が渡される
 \end{frame}
 
 \begin{frame}{図解4}
   \centering
-  \$ echo hoge $<$ in.txt $>$ out.txt
+  \$ ./a.out in.txt $>$ out.txt 2$>$\&1
   \begin{figure}[h]
     \begin{tikzpicture}[scale=.5]
       \draw (0, 0) node [draw,rectangle,minimum width=1cm,minimum height=4cm,label={\tiny echo}] (p) {}
@@ -525,12 +524,12 @@
         (sr3) -- (in)
         (sr4) -- (out);
       \draw[dashed]
-        (slin) -- (sr3)
+        (slin) -- (srin)
         (slout) -- (sr4)
-        (slerr) -- (srerr);
+        (slerr) -- (sr4);
     \end{tikzpicture}
   \end{figure}
-  echo の標準出力が fd=3(out.txt) へ向かう
+  出力, エラー出力共にout.txtへ書き込まれる
 \end{frame}
 
 \begin{frame}{まとめ}
