@@ -35,10 +35,10 @@
 
 \end{frame}
 
-\section{CUI使ってますか？}
+\section{CLI使ってますか？}
 \begin{frame}
   \centering
-  \Huge{CUI使ってますか？}
+  \Huge{CLI使ってますか？}
 \end{frame}
 
 \begin{frame}
@@ -62,28 +62,26 @@
 \end{frame}
 
 \begin{frame}
-  というわけでCUIの話をします.
+  というわけでCLIの話をします.
 \end{frame}
 
 \begin{frame}
-  そもそもCUIとは？
+  そもそもCLIとは？
   \begin{itemize}
-    \item{Character User Interface}
-    \item{グラフィカルでない, 文字を基本としたインターフェース}
+    \item{Command Line Interface}
+    \item{グラフィカルでない, 文字入力によるインターフェース}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \centering
   \Huge{↓これとか,} \\
-
   \includegraphics[keepaspectratio, scale=.5]{./img/ps.png}
 \end{frame}
 
 \begin{frame}
   \centering
   \Huge{↓これとか.} \\
-
   \includegraphics[keepaspectratio, scale=.5]{./img/bash.png}
 \end{frame}
 
@@ -91,7 +89,7 @@
   普段からこんな感じで使っていると思います.
   
   \centering
-  ここに画像
+  \includegraphics[keepaspectratio, scale=.5]{./img/console.png}
 \end{frame}
 
 \begin{frame}
@@ -154,6 +152,8 @@
   \begin{itemize}
     \item{なんかプロセス間の通信に使ってるらしい}
     \item{標準入力, 出力, エラー出力がある}
+    \item{\alert{ST}andar\alert{D} \alert{IN}put, \alert{ST}andar\alert{D} \alert{OUT},
+      \alert{ST}andar\alert{D} \alert{ERR}or}
   \end{itemize}
 \end{frame}
 
@@ -200,22 +200,32 @@
 \end{frame}
 
 \begin{frame}{/dev/stdinを追ってみる}
-  \$ ls -al /dev/stdin でstdinの情報が見れる \\
+  \$ ls -l /dev/stdin でstdinの情報が見れる \\
   \vspace{0.2in}
-  ここに画像 \\
+  {
+    \centering
+    \includegraphics[keepaspectratio, scale=.5]{./img/stdin.png} \\
+  }
   どうやら/proc/self/fd/0へのリンクらしい \\
 \end{frame}
 
 \begin{frame}{/dev/stdinを追ってみる}
-  同様に\$ ls -al /proc/self/fd/0 する \\
+  同様に\$ ls -l /proc/self/fd/0 する \\
   \vspace{0.2in}
-  ここに画像 \\
-  /dev/pts/1 へのリンクらしい(数字部は人によって違います)
+  {
+    \centering
+    \includegraphics[keepaspectratio, scale=.5]{./img/self.png} \\
+  }
+  /dev/pts/1 へのリンクらしい (ここは環境によって変わります)
 \end{frame}
 
 \begin{frame}
   同様に\$ ls -l /dev/pts/1 する \\
-  ここに画像 \\
+  \vspace{0.2in}
+  {
+    \centering
+    \includegraphics[keepaspectratio, scale=.5]{./img/pts.png} \\
+  }
   これが本体, 数字部は...後で説明します.
 \end{frame}
 
@@ -253,10 +263,13 @@
 \end{frame}
 
 \begin{frame}{補足}
+  
   印刷電信機, 昔はこれで通信をしていた. $\rightarrow$ 通信端末
-
-  \centering
-  ここにテレタイプ端末の画像
+  {
+    \centering
+    \includegraphics[keepaspectratio, scale=.18]{./img/tty.jpg} \\
+  }
+  \footnote*{\scriptsize 画像は\url{https://commons.wikimedia.org/wiki/File:Televideo925Terminal.jpg}}
 \end{frame}
 
 \begin{frame}{補足}
@@ -274,7 +287,8 @@
 \begin{frame}{補足}
   \centering
   \Huge
-  $\downarrow$ 端末 $\downarrow$
+  $\downarrow$ 仮想端末 $\downarrow$ \\
+  \includegraphics[keepaspectratio, scale=.5]{./img/ptty.png}
 \end{frame}
 
 \begin{frame}{補足}
@@ -349,23 +363,6 @@
   が標準出力先をto/file/pathへ向けている \\
   $\rightarrow$ ファイルへの保存ができる！ \\
   \vspace{.5cm}
-\end{frame}
-
-\begin{frame}{標準入力}
-  入力のリダイレクトもできる \\
-  \$ grep regex $<$ hoge.txt \\
-  \vspace{.2in}
-  普段はキーボードから入力を待つところを, ファイルの内容を入力とすることができる. \\
-  \ \ $\rightarrow$ !!! ファイルからの標準入力に使えるのでは !!! \\
-\end{frame}
-
-\begin{frame}{ちょっと補足}
-  リダイレクトにはFile Descriptorを指定できる \\
-  e.g.)
-  \begin{itemize}
-    \item{echo hoge 0$>$\&1}
-    \item{curl example.com $>$ file.txt 2$>$\&1 }
-  \end{itemize}
 \end{frame}
 
 \begin{frame}{図解1}
@@ -444,12 +441,30 @@
   echo の標準出力が fd=3(out.txt) へ向かう
 \end{frame}
 
+
+\begin{frame}{標準入力}
+  入力のリダイレクトもできる \\
+  \$ grep regex $<$ hoge.txt \\
+  \vspace{.2in}
+  普段はキーボードから入力を待つところを, ファイルの内容を入力とすることができる. \\
+  \ \ $\rightarrow$ !!! ファイルからの標準入力に使えるのでは !!! \\
+\end{frame}
+
+\begin{frame}{ちょっと補足}
+  リダイレクトにはFile Descriptorを指定できる \\
+  e.g.)
+  \begin{itemize}
+    \item{echo hoge 0$>$\&1}
+    \item{curl example.com $>$ file.txt 2$>$\&1 }
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{図解3}
   \centering
   \$ ./a.out $<$ in.txt $>$ out.txt
   \begin{figure}[h]
     \begin{tikzpicture}[scale=.5]
-      \draw (0, 0) node [draw,rectangle,minimum width=1cm,minimum height=4cm,label={\tiny echo}] (p) {}
+      \draw (0, 0) node [draw,rectangle,minimum width=1cm,minimum height=4cm,label={\tiny ./a.out}] (p) {}
         ($(p.east) + (0, 3)$) coordinate (pin) node [label={\tiny 0}, right](){}
         ($(p.east) + (0, 1)$) coordinate (pout) node [label={\tiny 1}, right](){}
         ($(p.east) + (0,-1)$) coordinate (perr) node [label={\tiny 2}, right](){};
@@ -493,7 +508,7 @@
   \$ ./a.out in.txt $>$ out.txt 2$>$\&1
   \begin{figure}[h]
     \begin{tikzpicture}[scale=.5]
-      \draw (0, 0) node [draw,rectangle,minimum width=1cm,minimum height=4cm,label={\tiny echo}] (p) {}
+      \draw (0, 0) node [draw,rectangle,minimum width=1cm,minimum height=4cm,label={\tiny ./a.out}] (p) {}
         ($(p.east) + (0, 3)$) coordinate (pin) node [label={\tiny 0}, right](){}
         ($(p.east) + (0, 1)$) coordinate (pout) node [label={\tiny 1}, right](){}
         ($(p.east) + (0,-1)$) coordinate (perr) node [label={\tiny 2}, right](){};
@@ -538,6 +553,7 @@
   \vspace{.2in}
   \$ command $<$ to/file/path \\
   \ \ $\rightarrow$ 標準入力リダイレクト \\
+  もっと詳しい情報は\$ man bashで. \\
 \end{frame}
 
 \begin{frame}{まとめ}
@@ -554,10 +570,9 @@
 
 \begin{frame}{パイプ}
   あるコマンドの出力を次のコマンドの入力として渡す事ができる \\
+  \vspace{.2in}
   \$ echo foge $|$ sed s/f/h/ \\
   hoge
-
-  \# cat file $|$ grep regex
 
   \small いわゆるシェル芸で頻出
 \end{frame}
@@ -566,7 +581,7 @@
   ``シェル芸 とは、主にUNIX系オペレーティングシステムにおいて「マウスも使わず、ソースコードも残さず、
   GUIツールを立ち上げる間もなく、あらゆる調査・計算・テキスト処理を CLI端末へのコマンド入力 一撃で
   終わらせること」である。この技術を持つ人物を シェル芸人 という。''
-  \footnote{USP友の会会長・上田隆一による定義}
+  \footnote{USP友の会会長・上田隆一氏による定義}
 \end{frame}
 
 \begin{frame}
@@ -608,7 +623,22 @@
 \end{frame}
 
 \begin{frame}
-  ここから@\_\_Bactpus\_\_のターン
+  \fontsize{7pt}{0pt}\selectfont
+  77y/5Lq65Lq65Lq65Lq65Lq65Lq65Lq65Lq65Lq65Lq65Lq65Lq65Lq65Lq65Lq65Lq677y/Cu+8 \\
+  nuOAgOOBk+OBk+OBi+OCiUBfX0JhY3RwdXNfX+OBruOCv+ODvOODs+OAgO+8nArvv6NZXlleWV5Z \\
+  XlleWV5ZXlleWV5ZXlleWV5ZXlleWV5ZXu+/owo=
+\end{frame}
+
+\begin{frame}
+  \includegraphics[keepaspectratio, scale=.5]{./img/sd.png}
+\end{frame}
+
+\begin{frame}
+  \centering
+  \Large
+  ＿人人人人人人人人人人人人人人人人＿ \\
+  ＞　ここから@\_\_Bactpus\_\_のターン　＜ \\
+  Y\textasciicircum Y\textasciicircum Y\textasciicircum Y\textasciicircum Y\textasciicircum Y\textasciicircum Y\textasciicircum Y\textasciicircum Y\textasciicircum Y\textasciicircum Y\textasciicircum Y\textasciicircum Y\textasciicircum Y\textasciicircum \\
 \end{frame}
 
 \begin{frame}
