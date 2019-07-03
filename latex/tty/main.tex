@@ -175,7 +175,7 @@
 \begin{frame}{/dev/って？}
   /以下のディレクトリの1つ \\
   \vspace{0.2in}
-  ここにls /devの画像
+  \includegraphics[keepaspectratio, scale=.5]{./img/dev.png}
 \end{frame}
 
 \begin{frame}{/dev/って？}
@@ -214,17 +214,17 @@
   \vspace{0.2in}
   {
     \centering
-    \includegraphics[keepaspectratio, scale=.5]{./img/self.png} \\
+    \includegraphics[keepaspectratio, scale=.5]{./img/pts.png} \\
   }
-  /dev/pts/1 へのリンクらしい (ここは環境によって変わります)
+  /dev/pts/5 へのリンクらしい (ここは環境によって変わります)
 \end{frame}
 
 \begin{frame}
-  同様に\$ ls -l /dev/pts/1 する \\
+  同様に\$ ls -l /dev/pts/5 する \\
   \vspace{0.2in}
   {
     \centering
-    \includegraphics[keepaspectratio, scale=.5]{./img/pts.png} \\
+    \includegraphics[keepaspectratio, scale=.5]{./img/self.png} \\
   }
   これが本体, 数字部は...後で説明します.
 \end{frame}
@@ -268,14 +268,14 @@
   {
     \centering
     \includegraphics[keepaspectratio, scale=.18]{./img/tty.jpg} \\
+  \scriptsize 画像は\url{https://commons.wikimedia.org/wiki/File:Televideo925Terminal.jpg}
   }
-  \footnote*{\scriptsize 画像は\url{https://commons.wikimedia.org/wiki/File:Televideo925Terminal.jpg}}
 \end{frame}
 
 \begin{frame}{補足}
   ユーザーがコマンドを打ち込み, 結果を出力する様子がこれと似ている
 
-  \ \ $\rightarrow$ 端末, Terminal
+  \ \ $\rightarrow$ 端末, Terminal, TTY
 \end{frame}
 
 \begin{frame}{補足}
@@ -505,7 +505,7 @@
 
 \begin{frame}{図解4}
   \centering
-  \$ ./a.out in.txt $>$ out.txt 2$>$\&1
+  \$ ./a.out $<$ in.txt $>$ out.txt 2$>$\&1
   \begin{figure}[h]
     \begin{tikzpicture}[scale=.5]
       \draw (0, 0) node [draw,rectangle,minimum width=1cm,minimum height=4cm,label={\tiny ./a.out}] (p) {}
@@ -539,7 +539,7 @@
         (sr3) -- (in)
         (sr4) -- (out);
       \draw[dashed]
-        (slin) -- (srin)
+        (slin) -- (sr3)
         (slout) -- (sr4)
         (slerr) -- (sr4);
     \end{tikzpicture}
@@ -607,7 +607,7 @@
   \$ seq 31 $|$ sed 5$\sim$5cBuzz $|$ sed 3$\sim$3s/[0-9]*/Fizz/
   \vspace{0.2in}
 
-  OSのユーザー数を求める \\
+  OSのユーザーを列挙する \\
   \$ cat /etc/passwd $|$ awk -F: '$\{\text{print \$1}\}$' $|$ wc -l
 \end{frame}
 
